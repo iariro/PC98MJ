@@ -1,0 +1,19 @@
+
+SRC	= pai.cpp mentuptn.cpp machiptn.cpp suteptn.cpp paicount.cpp \
+	  allpai.cpp \
+	  data/machidt.cpp data/sutedata.cpp
+
+HREADER	= pai.h mentuptn.h machiptn.h suteptn.h paicount.h \
+	  allpai.h \
+	  data/machidt.h data/sutedata.h
+
+all	: hitorimj mjtest
+
+hitorimj	: hitorimj.cpp $(SRC) $(HEADER)
+	tcc -ehitorimj.exe hitorimj.cpp $(SRC)
+
+mjtest	: mjtestmain.cpp $(SRC) $(HEADER)
+	c++ -emjtest.exe mjtestmain.cpp $(SRC)
+
+clean:
+	rm -f mjtest hitorimj core

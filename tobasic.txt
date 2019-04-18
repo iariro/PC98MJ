@@ -1,0 +1,50 @@
+
+void getMachi(unsigned short _seg * segTehai, unsigned short * addrTehai,
+	unsigned short _seg * segMachi, unsigned short * addrMachi,
+	unsigned short _seg * segMachiCount, unsigned short * addrMachiCount);
+
+/**
+ * CALL GETMACHI(TEHAI, MACHI, MACHICNT)
+ *  0 MACHICNT addr
+ *  2 MACHICNT seg
+ *  4 MACHI addr
+ *  6 MACHI seg
+ *  8 TEHAI addr
+ * 10 TEHAI seg
+ */
+getMachiEntry()
+{
+	asm
+	{
+		les si,[bx + 0]
+		push es
+		push si
+
+		les si,[bx + 4]
+		push es
+		push si
+
+		les si,[bx + 8]
+		push es
+		push si
+	}
+	getMachi(
+		(unsigned short _seg * segTehai)1,
+		(unsigned short * addrTehai)2,
+		(unsigned short _seg * segMachi)3,
+		(unsigned short * addrMachi)4,
+		(unsigned short _seg * segMachiCount)5,
+		(unsigned short * addrMachiCount)6);
+}
+
+void getMachi(unsigned short _seg * segTehai, unsigned short * addrTehai,
+	unsigned short _seg * segMachi, unsigned short * addrMachi,
+	unsigned short _seg * segMachiCount, unsigned short * addrMachiCount)
+{
+	MachiPattern pattern(0, 0);
+	PaiCount count((Pai::PaiKind *)(segTehai + addrTehai), 13);
+	pattern.MakeMentsu((Pai::PaiKind *)(segTehai + addrTehai), 13);
+
+	*(segMachiCount + addrMachiCount) =
+		pattern.GetMachi((Pai::PaiKind *)(segMachi + addrMachi), &count);
+}
